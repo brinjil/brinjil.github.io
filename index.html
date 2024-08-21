@@ -54,7 +54,7 @@
                     <div class="card-body">
                       <h5 class="card-title">Company Profile</h5>
                       <p class="card-text">Start building your dream company profile with us.</p>
-                      <a href="#" class="btn btn-primary">Contact Us</a>
+                      <button class="btn btn-primary" name="contact-modal">Contact Us</button>
                     </div>
                 </div>
                 <div class="card" style="width: 18rem; align-items: center;">
@@ -90,4 +90,80 @@
           </div>
 
     </body>
+    <script language="javascript">
+      // fetch('http://localhost/nuridaflorist/apis/bridge/index.php?title=tes')
+      //   .then(response => response.json())
+      //   .then(data => {
+      //     console.log(data);
+      //   })
+      //   .catch(error => {
+      //     console.error('Error:',  
+      // error);
+      //   });
+      
+
+      // const data = {
+      //   title: 'pos_tes',
+      // };
+
+      // fetch('http://localhost/nuridaflorist/apis/bridge/index.php', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({data})
+      // }).then(response  => {
+      //   if (!response.ok) {
+      //     throw new Error('Network response was not ok');
+      //   }
+      //   return response.json();
+      //   console.log(response);
+      // }).then(data => {
+      //   console.log(data);  
+      // }).catch(error => {
+      //   console.error('Error:', error);  
+      // });
+
+      // const data = {
+      //   title: 'pos_tes',
+      // };
+
+      // fetch('http://localhost/nuridaflorist/apis/bridge/index.php', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({data})
+      // }).then(data  => {
+      //   console.log(data);
+      // }).catch(error => {
+      //   console.error('Error:', error);  
+      // });
+
+      let local = 'file:///C:';
+
+      let host = '';
+      if(window.location.href.indexOf(local) > -1){
+        local = true;
+        host = 'http://localhost/';
+      }else{
+        local = false;
+        host = 'https://nuridaflorist.com/';
+      }
+
+      const buttons = document.getElementsByName('contact-modal');
+
+        // Add an event listener to the button (assuming there's only one button with this name)
+        buttons[0].addEventListener('click', function() {
+          let data = {title: "pos_tes"};
+          fetch(host+"nuridaflorist/apis/bridge/index.php", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'}, 
+            dataType: 'json',
+            body: JSON.stringify({data})
+          }).then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.log('Error:', error));
+            });
+    </script>
 </html>
