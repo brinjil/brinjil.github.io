@@ -8,37 +8,37 @@
     <body>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <nav class="navbar navbar-expand-lg" data-bs-theme="dark" style="background-color: #005cac;">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#">Brinjil</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                  </li>
-                </ul>
-              </div>
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">Brinjil</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                </li> -->
+              </ul>
             </div>
-          </nav>
+          </div>
+        </nav>
 
           <div class="container" style="margin-top:100px;">
             <center><img src="Untitled.png" style="height:auto; max-width:336px; width: 263px;" class="card-img-top" alt="..."></center>
@@ -124,7 +124,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script language="javascript">
-      // fetch('http://localhost/nuridaflorist/apis/bridge/index.php?title=tes')
+      // fetch('http://nurida-florist.com/apis/apk/index.php?title=tes')
       //   .then(response => response.json())
       //   .then(data => {
       //     console.log(data);
@@ -173,7 +173,7 @@
       //   console.error('Error:', error);  
       // });
 
-      let local = 'file:///C:';
+      let local = 'localhost';
 
       let host = '';
       if(window.location.href.indexOf(local) > -1){
@@ -186,36 +186,62 @@
 
       const buttons = document.getElementsByName('send-message');
 
-        // Add an event listener to the button (assuming there's only one button with this name)
-        buttons[0].addEventListener('click', function() {
+      // Add an event listener to the button (assuming there's only one button with this name)
+      buttons[0].addEventListener('click', function() {
 
-          let data = {
-            name: document.getElementById("name").value,
-            contact: document.getElementById("contact").value,
-            message: document.getElementById("message").value,
-            api_key: "12345",
-            origin: host
-          }
+        //START post still got a problem on CORS on production
+        // let data = {
+        //   name: document.getElementById("name").value,
+        //   contact: document.getElementById("contact").value,
+        //   message: document.getElementById("message").value,
+        //   api_key: "12345",
+        //   // origin: host
+        //   origin: host
+        // }
 
-          fetch(host+"apis/bridge/index.php", {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'}, 
-            dataType: 'json',
-            body: JSON.stringify({data})
-          }).then(response => {
-            response.json();
-            document.getElementById("name").value = '';
-            document.getElementById("contact").value = '';
-            document.getElementById("message").value = '';
-            Swal.fire({
-              title: "Thank You!",
-              text: "You will receive our message soon.",
-              icon: "success"
-            });
-          })
-            .then(data => console.log(data)
-          )
-            .catch(error => console.log('Error:', error));
-          }); 
+        // // fetch(host+"apis/bridge/index.php", {
+        // fetch(host+"apis/bridge/index.php", {
+        //   method: "POST",
+        //   headers: {'Content-Type': 'application/json'}, 
+        //   dataType: 'json',
+        //   body: JSON.stringify({data})
+        // }).then(response => {
+        //   response.json();
+        //   document.getElementById("name").value = '';
+        //   document.getElementById("contact").value = '';
+        //   document.getElementById("message").value = '';
+        //   Swal.fire({
+        //     title: "Thank You!",
+        //     text: "You will receive our message soon.",
+        //     icon: "success"
+        //   });
+        // }).then(data => console.log(data)
+        // ).catch(error => console.log('Error:', error));
+         
+        //END post still got a problem on CORS on production
+
+        let name = document.getElementById("name");
+        let contact = document.getElementById("contact");
+        let message =  document.getElementById("message");
+
+        window.location.href = host+'apis/bridge/contact_us.php?name='+name.value+'&contact='+contact.value+'&message='+contact.value+'&origin='+host;
+        // fetch(host+'apis/bridge/contact_us.php?name='+name.value+'&contact='+contact+'&message='+message+'&origin='+host)
+        // .then(response => {
+        //   response.json();
+        //   name.value = '';
+        //   contact.value = '';
+        //   message.value = '';
+        //   Swal.fire({
+        //     title: "Thank You!",
+        //     text: "You will receive our message soon.",
+        //     icon: "success"
+        //   });
+        // })
+        // .catch(error => {
+        //   console.error('Error:',  
+        //   error);
+        // });
+
+      });
     </script>
 </html>
