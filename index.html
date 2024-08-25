@@ -190,41 +190,41 @@
       buttons[0].addEventListener('click', function() {
 
         //START post still got a problem on CORS on production
-        // let data = {
-        //   name: document.getElementById("name").value,
-        //   contact: document.getElementById("contact").value,
-        //   message: document.getElementById("message").value,
-        //   api_key: "12345",
-        //   // origin: host
-        //   origin: host
-        // }
+        let data = {
+          name: document.getElementById("name").value,
+          contact: document.getElementById("contact").value,
+          message: document.getElementById("message").value,
+          api_key: "12345",
+          // origin: host
+          origin: host
+        }
 
-        // // fetch(host+"apis/bridge/index.php", {
         // fetch(host+"apis/bridge/index.php", {
-        //   method: "POST",
-        //   headers: {'Content-Type': 'application/json'}, 
-        //   dataType: 'json',
-        //   body: JSON.stringify({data})
-        // }).then(response => {
-        //   response.json();
-        //   document.getElementById("name").value = '';
-        //   document.getElementById("contact").value = '';
-        //   document.getElementById("message").value = '';
-        //   Swal.fire({
-        //     title: "Thank You!",
-        //     text: "You will receive our message soon.",
-        //     icon: "success"
-        //   });
-        // }).then(data => console.log(data)
-        // ).catch(error => console.log('Error:', error));
+        fetch(host+"apis/bridge/index.php", {
+          method: "POST",
+          headers: {'Content-Type': 'application/json'}, 
+          dataType: 'json',
+          body: JSON.stringify({data})
+        }).then(response => {
+          response.json();
+          document.getElementById("name").value = '';
+          document.getElementById("contact").value = '';
+          document.getElementById("message").value = '';
+          Swal.fire({
+            title: "Thank You!",
+            text: "You will receive our message soon.",
+            icon: "success"
+          });
+        }).then(data => console.log(data)
+        ).catch(error => console.log('Error:', error));
          
         //END post still got a problem on CORS on production
 
-        let name = document.getElementById("name");
-        let contact = document.getElementById("contact");
-        let message =  document.getElementById("message");
+        // let name = document.getElementById("name");
+        // let contact = document.getElementById("contact");
+        // let message =  document.getElementById("message");
 
-        window.location.href = host+'apis/bridge/contact_us.php?name='+name.value+'&contact='+contact.value+'&message='+message.value+'&origin='+host;
+        // window.location.href = host+'apis/bridge/contact_us.php?name='+name.value+'&contact='+contact.value+'&message='+message.value+'&origin='+host;
         // fetch(host+'apis/bridge/contact_us.php?name='+name.value+'&contact='+contact+'&message='+message+'&origin='+host)
         // .then(response => {
         //   response.json();
