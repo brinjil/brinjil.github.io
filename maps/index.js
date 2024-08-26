@@ -9,6 +9,16 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 document.addEventListener("DOMContentLoaded", function(event) {
+  setTimeout(() => {
+    function isTokenInvalid(token) {
+        return token === '' || token === 'null' || token === null;
+    }
+    var token = getCookie('token');
+    if(isTokenInvalid(token)){
+        window.location.href="login.html"
+    }
+  }, 200);
+
     var newCenter = {
         //-6.312640, 106.743008
         lat: -6.312640,
@@ -349,3 +359,7 @@ function setResultList(parsedResult) {
     
     currentMarkers.push(new L.marker(position).addTo(map).bindPopup('Test..<a href=#>test</a>').openPopup());
 }
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+  window.location.href = 'logout.html';
+});
