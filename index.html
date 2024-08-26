@@ -178,10 +178,10 @@
       let host = '';
       if(window.location.href.indexOf(local) > -1){
         local = true;
-        host = 'http://localhost/nuridaflorist/';
+        host = 'http://localhost/nuridaflorist/apis/bridge/';
       }else{
         local = false;
-        host = 'https://nurida-florist.com/';
+        host = 'https://nurida-florist.com/apis/bridge/';
       }
 
       const buttons = document.getElementsByName('send-message');
@@ -189,7 +189,6 @@
       // Add an event listener to the button (assuming there's only one button with this name)
       buttons[0].addEventListener('click', function() {
 
-        //START post still got a problem on CORS on production
         let data = {
           name: document.getElementById("name").value,
           contact: document.getElementById("contact").value,
@@ -217,8 +216,6 @@
           });
         }).then(data => console.log(data)
         ).catch(error => console.log('Error:', error));
-         
-        //END post still got a problem on CORS on production
 
         // let name = document.getElementById("name");
         // let contact = document.getElementById("contact");
