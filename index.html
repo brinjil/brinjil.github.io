@@ -174,14 +174,13 @@
       // });
 
       let local = 'localhost';
-
       let host = '';
       if(window.location.href.indexOf(local) > -1){
         local = true;
-        host = 'http://localhost/nuridaflorist/';
+        host = 'http://localhost/brinjilbackend/';
       }else{
-        local = false;
-        host = 'https://nurida-florist.com/';
+      local = false;
+        host = 'https://nurida-florist.com/apis/';
       }
 
       const buttons = document.getElementsByName('send-message');
@@ -199,13 +198,13 @@
         }
 
         // fetch(host+"apis/bridge/index.php", {
-        fetch(host+"apis/bridge/index.php", {
+        fetch(host+"bridge/index.php", {
           method: "POST",
           headers: {'Content-Type': 'application/json'}, 
           dataType: 'json',
           body: JSON.stringify({data})
-        }).then(response => {
-          response.json();
+        }).then(response => response.json())
+        .then(data => {
           document.getElementById("name").value = '';
           document.getElementById("contact").value = '';
           document.getElementById("message").value = '';
@@ -214,7 +213,7 @@
             text: "You will receive our message soon.",
             icon: "success"
           });
-        }).then(data => console.log(data)
+        }
         ).catch(error => console.log('Error:', error));
 
         // let name = document.getElementById("name");
