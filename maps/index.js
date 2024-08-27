@@ -18,76 +18,117 @@ document.addEventListener("DOMContentLoaded", function(event) {
         window.location.href="login.html"
     }
   }, 200);
+  
+  let local = 'localhost';
+  let host = '';
+  if(window.location.href.indexOf(local) > -1){
+    local = true;
+    host = 'http://localhost/brinjilbackend/';
+  }else{
+  local = false;
+    host = 'https://nurida-florist.com/apis/';
+  }
 
-    var newCenter = {
-        //-6.312640, 106.743008
-        lat: -6.312640,
-        lng: 106.743008
-    };
-    
-    map.setView(newCenter, 19, true);
-    map.setMinZoom(10); 
+  var token = getCookie('token');
+  let data = {
+    token: token
+  }
 
-    var markers = [
-        [-6.3120128075724695, 106.74366116534658],
-        [-6.31222082955609, 106.74331784259267],
-        [-6.3114562966779, 106.74288868915029],
-        [-6.311674899680798, 106.74383282672353],
-        [-6.310958382274288, 106.74190700065084],
-        [-6.300734379669636, 106.76198601733633]
-    ];
+  var circleLayer = L.layerGroup();
 
-    var default_icon_size = [38, 50];
-    var imageList = [
-        'aryagraha/tenis.png', 
-        'aryagraha/hatihatitaik.png',
-        'aryagraha/masjid.png',
-        'aryagraha/warung.png',
-        'aryagraha/tower.jpg',
-        'commonicon/macet.png'
-    ];
-
-    var nameList = [
-        'Lapangan', 
-        'Kadang ada taik kucing.png',
-        'Masjid',
-        'Warung',
-        'Tower',
-        'Langganan Macet'
-    ];
-    
-    for (var i = 0; i < markers.length; i++) {
-
-        var customIcon = L.icon({
-            iconUrl: imageList[i],
-            iconSize: default_icon_size, // Adjust dimensions as needed
-        });
-
-        var marker = L.marker(markers[i])
-        .setIcon(customIcon)
-        .bindPopup(nameList[i]+'</br><a href=#>details</a>')
-        .openPopup()
-        .addTo(map);
+  fetch(host+"bridge/markers/dots/read/", {
+    method: "POST",
+    headers: {'Content-Type': 'application/json'}, 
+    dataType: 'json',
+    body: JSON.stringify({data})
+  }).then(response =>response.json())
+  .then(data => {
+    var data = data.data;
+    for(let i=0; i<data.length; i++){
+      // console.log(data[i].latitude);
+      var circle = L.circle([data[i].latitude, data[i].longitude], {
+        radius: 3
+      }).addTo(circleLayer);
+      circleLayer.addTo(map);
     }
+  })
+  .catch(error => console.log('Error:', error));
 
-    //Line
-    var line = L.polyline([
+
+  //to remove layer:
+  // setTimeout(() => {
+  //   circleLayer.remove();
+  // }, 5000);
+
+  var newCenter = {
+      //-6.312640, 106.743008
+      lat: -6.312640,
+      lng: 106.743008
+  };
+    
+  map.setView(newCenter, 19, true);
+  map.setMinZoom(10); 
+
+  var markers = [
+      [-6.3120128075724695, 106.74366116534658],
+      [-6.31222082955609, 106.74331784259267],
       [-6.3114562966779, 106.74288868915029],
-      [-6.311674899680798, 106.74383282672353]
-    ]).bindPopup(nameList[i]+'</br>Distance: </a>').addTo(map);
+      [-6.311674899680798, 106.74383282672353],
+      [-6.310958382274288, 106.74190700065084],
+      [-6.300734379669636, 106.76198601733633]
+  ];
 
-    //Triangle
-    var triangle = L.polygon([
-      [-6.301814958751263, 106.76194846632825],
-      [-6.301168779425779, 106.76245272162308],
-      [-6.301948466776063, 106.76313936713089]
-    ]).addTo(map);
+  var default_icon_size = [38, 50];
+  var imageList = [
+      'aryagraha/tenis.png', 
+      'aryagraha/hatihatitaik.png',
+      'aryagraha/masjid.png',
+      'aryagraha/warung.png',
+      'aryagraha/tower.jpg',
+      'commonicon/macet.png'
+  ];
 
-    triangle.setStyle({
-      color: 'green',
-      fillColor: 'red',
-      fillOpacity: 0.5
-    });
+  var nameList = [
+      'Lapangan', 
+      'Kadang ada taik kucing.png',
+      'Masjid',
+      'Warung',
+      'Tower',
+      'Langganan Macet'
+  ];
+  
+  for (var i = 0; i < markers.length; i++) {
+
+      var customIcon = L.icon({
+          iconUrl: imageList[i],
+          iconSize: default_icon_size, // Adjust dimensions as needed
+      });
+
+      var marker = L.marker(markers[i])
+      .setIcon(customIcon)
+      .bindPopup(nameList[i]+'</br><a href=#>details</a>')
+      .openPopup()
+      .addTo(map);
+  }
+
+  //Line
+  var line = L.polyline([
+    [-6.3114562966779, 106.74288868915029],
+    [-6.311674899680798, 106.74383282672353]
+  ]).bindPopup(nameList[i]+'</br>Distance: </a>').addTo(map);
+
+  //Triangle
+  var triangle = L.polygon([
+    [-6.301814958751263, 106.76194846632825],
+    [-6.301168779425779, 106.76245272162308],
+    [-6.301948466776063, 106.76313936713089]
+  ]).addTo(map);
+
+  triangle.setStyle({
+    color: 'green',
+    fillColor: 'red',
+    fillOpacity: 0.5
+  });
 
 });
 
@@ -104,8 +145,40 @@ map.on('click', function(e) {
     var popLocation= e.latlng;
 
     var circle = L.circle([lat, lng], {
-      radius: 3
-  }).addTo(map);
+        radius: 3
+    }).addTo(map);
+
+    let local = 'localhost';
+    let host = '';
+    if(window.location.href.indexOf(local) > -1){
+      local = true;
+      host = 'http://localhost/brinjilbackend/';
+    }else{
+    local = false;
+      host = 'https://nurida-florist.com/apis/';
+    }
+
+    var token = getCookie('token')
+    let data = {
+      token:"gagagrag42252524agfagadfg341",
+        latitude:lat,
+        longitude:lng,
+        altitude:"-"
+    }
+
+    //SAVE DOTS REQUEST
+    fetch(host+"bridge/markers/dots/create/", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'}, 
+      dataType: 'json',
+      body: JSON.stringify({data})
+    }).then(response => response.json())
+    .then(data => {
+      if(data.success == false){
+        alert('records limited, contact the web admin');
+      }
+    }
+    ).catch(error => console.log('Error:', error));
 });
 
 
@@ -319,9 +392,6 @@ document.getElementById('search-button').addEventListener('click', () => {
               ]
             }
           ]
-        
-        
-        
         );
 });
 
