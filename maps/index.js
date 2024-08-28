@@ -8,7 +8,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+
+
+
+
 document.addEventListener("DOMContentLoaded", function(event) {
+  
   setTimeout(() => {
     function isTokenInvalid(token) {
         return token === '' || token === 'null' || token === null;
@@ -19,42 +24,93 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   }, 200);
   
-  let local = 'localhost';
-  let host = '';
-  if(window.location.href.indexOf(local) > -1){
-    local = true;
-    host = 'http://localhost/brinjilbackend/';
-  }else{
-  local = false;
-    host = 'https://nurida-florist.com/apis/';
-  }
+  // let local = 'localhost';
+  // let host = '';
+  // if(window.location.href.indexOf(local) > -1){
+  //   local = true;
+  //   host = 'http://localhost/brinjilbackend/';
+  // }else{
+  // local = false;
+  //   host = 'https://nurida-florist.com/apis/';
+  // }
 
-  var token = getCookie('token');
-  let data = {
-    token: token
-  }
+  // var token = getCookie('token');
+  // let data = {
+  //   token: token
+  // }
 
-  var circleLayer = L.layerGroup();
+  // var circleLayer = L.layerGroup();
 
-  fetch(host+"bridge/markers/dots/read/", {
-    method: "POST",
-    headers: {'Content-Type': 'application/json'}, 
-    dataType: 'json',
-    body: JSON.stringify({data})
-  }).then(response =>response.json())
-  .then(data => {
-    var data = data.data;
-    for(let i=0; i<data.length; i++){
-      // console.log(data[i].latitude);
-      var circle = L.circle([data[i].latitude, data[i].longitude], {
-        radius: 3
-      }).addTo(circleLayer);
-      circleLayer.addTo(map);
+  // fetch(host+"bridge/markers/dots/read/", {
+  //   method: "POST",
+  //   headers: {'Content-Type': 'application/json'}, 
+  //   dataType: 'json',
+  //   body: JSON.stringify({data})
+  // }).then(response =>response.json())
+  // .then(data => {
+  //   var data = data.data;
+  //   for(let i=0; i<data.length; i++){
+  //     // console.log(data[i].latitude);
+  //     var circle = L.circle([data[i].latitude, data[i].longitude], {
+  //       radius: 3
+  //     }).addTo(circleLayer);
+  //     circleLayer.addTo(map);
+  //   }
+  // })
+  // .catch(error => console.log('Error:', error));
+  function loadData(param){
+    let local = 'localhost';
+    let host = '';
+    if(window.location.href.indexOf(local) > -1){
+      local = true;
+      host = 'http://localhost/brinjilbackend/';
+    }else{
+    local = false;
+      host = 'https://nurida-florist.com/apis/';
     }
-  })
-  .catch(error => console.log('Error:', error));
+  
+    var token = getCookie('token');
+    let data = {
+      token: token
+    }
+  
+    var circleLayer = L.layerGroup();
+    circleLayer.addTo(map);
 
-
+    fetch(host+"bridge/markers/dots/read/", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'}, 
+      dataType: 'json',
+      body: JSON.stringify({data})
+    }).then(response =>response.json())
+    .then(data => {
+      var data = data.data;
+      if(param=='init'){
+        for(let i=0; i<data.length; i++){
+          // console.log(data[i].latitude);
+          var circle = L.circle([data[i].latitude, data[i].longitude], {
+            radius: 3
+          }).addTo(circleLayer);
+        }
+        localStorage.setItem("last_marking", data.length);
+      }
+      if(data.length == parseInt(localStorage.getItem("last_marking"))){
+        console.log('marked request same, not loaded')
+      }else{
+        for(let i=parseInt(localStorage.getItem("last_marking")); i<data.length; i++){
+          // console.log(data[i].latitude);
+          var circle = L.circle([data[i].latitude, data[i].longitude], {
+            radius: 3
+          }).addTo(circleLayer);
+        }
+        console.log('new marker loaded');
+        localStorage.setItem("last_marking", data.length);
+      }
+    })
+    .catch(error => console.log('Error:', error));
+  }
+  loadData('init');
+  setInterval(loadData, 3000); 
   //to remove layer:
   // setTimeout(() => {
   //   circleLayer.remove();
