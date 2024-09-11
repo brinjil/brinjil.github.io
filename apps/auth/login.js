@@ -55,7 +55,7 @@ document.getElementById("btn-login").addEventListener("click", function() {
         document.getElementById("password").value = '';
         document.cookie = "token="+data.token+"; expires=Thu, 18 Dec 2024 12:00:00 UTC; Path=/; SameSite=Strict;"; 
         setTimeout(() => {
-            window.location.href="../home/index.html"
+            window.location.href="../home/"
         }, 200);
       }else{
         Swal.fire({
