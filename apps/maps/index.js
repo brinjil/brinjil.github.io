@@ -227,7 +227,7 @@ map.on('click', function(e) {
         alert('records limited, contact the web admin');
       }
     }
-    ).catch(error => console.log('Error:', error));
+    ).catch(error => alert('Error:', error));
 });
 
 
